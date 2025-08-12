@@ -1,0 +1,605 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Visão das Plantas - Djaimilia Pereira de Almeida</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=Inter:wght@300;400;600&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #2E1065 0%, #4C1D95 25%, #7C3AED 50%, #5B21B6 75%, #2E1065 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* Animated background elements */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .literary-element {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 25s infinite ease-in-out;
+            font-size: 2rem;
+        }
+
+        .literary-element:nth-child(1) { left: 5%; top: 10%; animation-delay: 0s; }
+        .literary-element:nth-child(2) { left: 85%; top: 20%; animation-delay: 5s; }
+        .literary-element:nth-child(3) { left: 15%; top: 70%; animation-delay: 10s; }
+        .literary-element:nth-child(4) { left: 75%; top: 80%; animation-delay: 15s; }
+        .literary-element:nth-child(5) { left: 50%; top: 50%; animation-delay: 20s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            33% { transform: translateY(-40px) rotate(10deg); }
+            66% { transform: translateY(-20px) rotate(-5deg); }
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+            padding: 60px 0;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: slideDown 1s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { opacity: 0; transform: translateY(-50px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .hero h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 4rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #F3E8FF, #DDD6FE, #C4B5FD);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+            text-shadow: 0 4px 20px rgba(196, 181, 253, 0.3);
+            animation: glow 3s ease-in-out infinite alternate;
+        }
+
+        .author {
+            font-size: 1.5rem;
+            color: #A78BFA;
+            margin-bottom: 25px;
+            font-style: italic;
+        }
+
+        @keyframes glow {
+            from { filter: drop-shadow(0 0 20px rgba(196, 181, 253, 0.4)); }
+            to { filter: drop-shadow(0 0 35px rgba(196, 181, 253, 0.8)); }
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            color: rgba(255, 255, 255, 0.85);
+            max-width: 700px;
+            margin: 0 auto 30px;
+            line-height: 1.7;
+        }
+
+        .quiz-container {
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            box-shadow: 0 25px 80px rgba(0, 0, 0, 0.4);
+            animation: fadeIn 1.5s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .question {
+            margin-bottom: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.3s ease;
+            animation: slideUp 0.8s ease-out;
+        }
+
+        .question:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(167, 139, 250, 0.2);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .question h3 {
+            color: #C4B5FD;
+            font-size: 1.3rem;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .options {
+            display: grid;
+            gap: 15px;
+        }
+
+        .option {
+            display: flex;
+            align-items: center;
+            padding: 15px 20px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            border-radius: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .option:hover {
+            border-color: #8B5CF6;
+            background: rgba(139, 92, 246, 0.1);
+            transform: translateX(10px);
+        }
+
+        .option input[type="radio"] {
+            margin-right: 15px;
+            accent-color: #8B5CF6;
+            transform: scale(1.2);
+        }
+
+        .option.correct {
+            border-color: #10B981;
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.1));
+            animation: correctPulse 0.6s ease;
+        }
+
+        .option.wrong {
+            border-color: #EF4444;
+            background: rgba(239, 68, 68, 0.1);
+            animation: shake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+            100% { transform: scale(1); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .submit-btn {
+            background: linear-gradient(135deg, #8B5CF6, #7C3AED);
+            color: white;
+            border: none;
+            padding: 18px 40px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: block;
+            margin: 40px auto;
+            box-shadow: 0 10px 30px rgba(139, 92, 246, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .submit-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 40px rgba(139, 92, 246, 0.4);
+            background: linear-gradient(135deg, #7C3AED, #8B5CF6);
+        }
+
+        .submit-btn:active {
+            transform: translateY(-1px);
+        }
+
+        .result {
+            text-align: center;
+            font-size: 1.5rem;
+            font-weight: 600;
+            padding: 30px;
+            border-radius: 20px;
+            margin-top: 30px;
+            animation: resultShow 0.8s ease;
+        }
+
+        @keyframes resultShow {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        .result.excellent {
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(52, 211, 153, 0.1));
+            color: #10B981;
+            border: 2px solid rgba(16, 185, 129, 0.3);
+        }
+
+        .result.good {
+            background: linear-gradient(135deg, rgba(245, 158, 11, 0.2), rgba(251, 191, 36, 0.1));
+            color: #F59E0B;
+            border: 2px solid rgba(245, 158, 11, 0.3);
+        }
+
+        .result.needs-improvement {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(248, 113, 113, 0.1));
+            color: #EF4444;
+            border: 2px solid rgba(239, 68, 68, 0.3);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8B5CF6, #C4B5FD);
+            border-radius: 10px;
+            width: 0%;
+            transition: width 0.3s ease;
+        }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.5rem; }
+            .container { padding: 15px; }
+            .quiz-container { padding: 25px; }
+            .question { padding: 20px; }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-animation">
+        <div class="literary-element">📚</div>
+        <div class="literary-element">✍️</div>
+        <div class="literary-element">🌺</div>
+        <div class="literary-element">📝</div>
+        <div class="literary-element">💭</div>
+    </div>
+
+    <div class="container">
+        <div class="hero">
+            <h1>A Visão das Plantas</h1>
+            <p class="author">Djaimilia Pereira de Almeida</p>
+            <p>Explore os temas e reflexões desta obra literária através de um quiz interativo sobre narrativa, memória e identidade</p>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressBar"></div>
+            </div>
+        </div>
+
+        <div class="quiz-container">
+            <form id="quizForm">
+                <div class="question">
+                    <h3>1. Qual obra inspirou Djaimilia a escrever "A Visão das Plantas"?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q1" value="a">
+                            "Os Pescadores" de Raul Brandão
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="b">
+                            "Os Lusíadas" de Camões
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q1" value="c">
+                            Nenhuma obra, o livro surge por pensamentos pessoais da autora
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>2. Qual é a profissão passada do protagonista Celestino?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q2" value="a">
+                            Comerciante português
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="b">
+                            Capitão de navio negreiro
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q2" value="c">
+                            Soldado colonial
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>3. Qual foi o desfecho da "Menina Holandesa"</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q3" value="a">
+                            Morta amarrada em uma floresta
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="b">
+                            Morta no porão do navio
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q3" value="c">
+                            Procura se reconciliar com vizinhos
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>4. Qual foi uma das atrocidades mais mencionadas que Celestino cometeu?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q4" value="a">
+                            Abandonou escravizados em ilhas desertas
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="b">
+                            Sufocou cativos com cal durante revolta no porão
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q4" value="c">
+                            Vendeu escravizados por preços abusivos
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>5. Como as plantas do jardim "veem" Celestino?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q5" value="a">
+                            Com indiferença, sem julgá-lo por seu passado
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="b">
+                            Com medo e repulsa
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q5" value="c">
+                            Com gratidão especial pelos cuidados
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>6. Por que a casa de Celestino estava abandonada quando ele retornou?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q6" value="a">
+                            Sua mãe e tias morreram enquanto ele estava no mar
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="b">
+                            A família o rejeitou por seu passado
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q6" value="c">
+                            Ele havia vendido a propriedade anos antes
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>7. Qual é a reação dos vizinhos em relação a Celestino?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q7" value="a">
+                            Ignoram completamente sua presença
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="b">
+                            O acolhem de volta com alegria
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q7" value="c">
+                            Eles o enxergam como uma figura estranha e misteriosa
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>8. Celestino demonstra arrependimento por suas atrocidades?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q8" value="a">
+                            Não, vive sem remorsos ou arrependimento
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="b">
+                            Sim, constantemente pede perdão
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q8" value="c">
+                            Apenas nas noites de insônia
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>9. O que simboliza o jardim na narrativa?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q9" value="a">
+                           Um abrigo e um espelho da indiferença
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="b">
+                           Maneira de se sustentar após perder tudo
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q9" value="c">
+                            Comércio
+                        </label>
+                    </div>
+                </div>
+
+                <div class="question">
+                    <h3>10. Qual é o tema central que a obra explora?</h3>
+                    <div class="options">
+                        <label class="option">
+                            <input type="radio" name="q10" value="a">
+                            Vitória do bem sobre o mal
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="b">
+                            A importância do perdão cristão
+                        </label>
+                        <label class="option">
+                            <input type="radio" name="q10" value="c">
+                            violência colonial e suas consequências históricas
+                        </label>
+                    </div>
+                </div>
+
+                <button type="submit" class="submit-btn">📚 Verificar Respostas 📚</button>
+            </form>
+
+            <div id="result" class="result" style="display: none;"></div>
+        </div>
+    </div>
+
+    <script>
+        const correctAnswers = {
+            q1: 'a',
+            q2: 'b', 
+            q3: 'a',
+            q4: 'b',
+            q5: 'a',
+            q6: 'a',
+            q7: 'c',
+            q8: 'a',
+            q9: 'a',
+            q10:'c'
+        };
+
+        let currentProgress = 0;
+
+        // Update progress bar based on answered questions
+        document.addEventListener('change', function(e) {
+            if (e.target.type === 'radio') {
+                updateProgress();
+            }
+        });
+
+        function updateProgress() {
+            const totalQuestions = Object.keys(correctAnswers).length;
+            let answeredQuestions = 0;
+            
+            for (let q in correctAnswers) {
+                if (document.querySelector(`input[name="${q}"]:checked`)) {
+                    answeredQuestions++;
+                }
+            }
+            
+            const progress = (answeredQuestions / totalQuestions) * 100;
+            document.getElementById('progressBar').style.width = progress + '%';
+        }
+
+        document.getElementById('quizForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            let score = 0;
+            const totalQuestions = Object.keys(correctAnswers).length;
+            
+            // Check answers and highlight correct/incorrect
+            for (let question in correctAnswers) {
+                const selectedOption = document.querySelector(`input[name="${question}"]:checked`);
+                const allOptions = document.querySelectorAll(`input[name="${question}"]`);
+                
+                allOptions.forEach(option => {
+                    const label = option.closest('.option');
+                    label.classList.remove('correct', 'wrong');
+                    
+                    if (option.value === correctAnswers[question]) {
+                        label.classList.add('correct');
+                        if (selectedOption === option) {
+                            score++;
+                        }
+                    } else if (selectedOption === option) {
+                        label.classList.add('wrong');
+                    }
+                });
+            }
+            
+            // Show result
+            const resultDiv = document.getElementById('result');
+            const percentage = (score / totalQuestions) * 100;
+            
+            let resultClass = '';
+            let resultMessage = '';
+            let emoji = '';
+            
+            if (percentage >= 80) {
+                resultClass = 'excellent';
+                emoji = '🌟';
+                resultMessage = `${emoji} Excelente! Você acertou ${score} de ${totalQuestions} questões (${percentage}%)! Demonstra um ótimo conhecimento sobre a obra de Djaimilia! 📚`;
+            } else if (percentage >= 60) {
+                resultClass = 'good';
+                emoji = '📖';
+                resultMessage = `${emoji} Bom trabalho! Você acertou ${score} de ${totalQuestions} questões (${percentage}%). Continue explorando a rica literatura de Djaimilia Pereira de Almeida! ✨`;
+            } else {
+                resultClass = 'needs-improvement';
+                emoji = '📝';
+                resultMessage = `${emoji} Você acertou ${score} de ${totalQuestions} questões (${percentage}%). Que tal conhecer mais sobre esta fascinante autora e sua obra? 📚`;
+            }
+            
+            resultDiv.className = `result ${resultClass}`;
+            resultDiv.innerHTML = resultMessage;
+            resultDiv.style.display = 'block';
+            
+            // Scroll to result
+            resultDiv.scrollIntoView({ behavior: 'smooth' });
+            
+            // Update progress to 100%
+            document.getElementById('progressBar').style.width = '100%';
+        });
+
+        // Add staggered animation to questions
+        window.addEventListener('load', function() {
+            const questions = document.querySelectorAll('.question');
+            questions.forEach((question, index) => {
+                question.style.animationDelay = `${index * 0.1}s`;
+            });
+        });
+    </script>
+</body>
+</html>
